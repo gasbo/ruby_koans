@@ -29,8 +29,23 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
+UNARY_SCORES = [100,0,0,0,50,0]
+TERNARY_SCORES = [1000,200,300,400,500,600]
+
 def score(dice)
-  # You need to write this method
+  counter = Hash.new(0)
+  score = 0
+  dice.each do |roll|
+    counter[roll] += 1
+  end
+  counter.each do |(key, value)|
+    while value >= 3
+      score += TERNARY_SCORES[key-1]
+      value -= 3
+    end
+    score += UNARY_SCORES[key-1]*value
+  end
+  score
 end
 
 class AboutScoringProject < Neo::Koan
